@@ -19,9 +19,15 @@ describe DockingStation do
         end
 
         it 'should release working bike' do
+            subject.dock(Bike.new)
+            expect(subject.release_bike.working?).to be(true)
+        end
+
+        it 'the docking station should not contain the realeased bike' do
             bike = Bike.new
             subject.dock(bike)
-            expect(subject.release_bike.working?).to be(true)
+            subject.release_bike
+            expect(subject.bikes).to be_empty
         end
 
     end
@@ -35,6 +41,11 @@ describe DockingStation do
         it 'should return the docked bike' do
             bike = Bike.new
             expect(subject.dock(bike)).to eq(bike)
+        end
+
+        it 'should not dock a bike when at capacity' do
+            subject.capacity.times { subject.dock(Bike.new) }
+            expect{ subject.dock(Bike.new) }.to raise_error("Docking station at capacity")
         end
 
     end
