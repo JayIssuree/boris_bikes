@@ -9,7 +9,7 @@ describe DockingStation do
         end
 
         it 'should raise an error if there are no bikes to release' do
-            expect { subject.release_bike }.to raise_error("No bikes available")
+            expect { subject.release_bike }.to raise_error("No working bikes available")
         end
 
         it 'should release a bike object' do
@@ -28,6 +28,24 @@ describe DockingStation do
             subject.dock(bike)
             subject.release_bike
             expect(subject.bikes).to be_empty
+        end
+
+        it 'should not release a broken bike' do
+            broken_bike = Bike.new
+            broken_bike.report_broken
+            subject.dock(broken_bike)
+            expect { subject.release_bike }.to raise_error("No working bikes available")
+            expect(subject.bikes).to include(broken_bike)
+        end
+
+        it 'should not release a broken bike no matter what position it is stored in @bikes' do
+            broken_bike = Bike.new
+            broken_bike.report_broken
+            working_bike = Bike.new
+            subject.dock(working_bike)
+            subject.dock(broken_bike)
+            expect(subject.release_bike).to eq(working_bike)
+            expect(subject.bikes).to include(broken_bike)
         end
 
     end
