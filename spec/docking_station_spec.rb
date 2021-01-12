@@ -43,8 +43,15 @@ describe DockingStation do
             expect(subject.dock(bike)).to eq(bike)
         end
 
-        it 'should not dock a bike when at capacity' do
-            subject.capacity.times { subject.dock(Bike.new) }
+        it 'should not dock a bike when at defualt capacity' do
+            DockingStation::DEFAULT_CAPACITY.times { subject.dock(Bike.new) }
+            expect{ subject.dock(Bike.new) }.to raise_error("Docking station at capacity")
+        end
+
+        it 'should initialize a docking station with a capacity of choice' do
+            new_capacity = 5
+            subject = DockingStation.new(new_capacity)
+            new_capacity.times { subject.dock(Bike.new) }
             expect{ subject.dock(Bike.new) }.to raise_error("Docking station at capacity")
         end
 
