@@ -12,7 +12,7 @@ class DockingStation
 
     def release_bike
         fail "No working bikes available" unless available_bike?
-        select_first_working_bike
+        bikes.delete(select_working_bike)
     end
 
     def dock(bike)
@@ -35,12 +35,10 @@ class DockingStation
         number_of_available_bikes > 0
     end
 
-    def select_first_working_bike
-        bikes.delete(
-            bikes.select {|bike|
-                bike.working?
-            }.pop
-        )
+    def select_working_bike
+        bikes.select {|bike|
+            bike.working?
+        }.pop
     end
 
 end
