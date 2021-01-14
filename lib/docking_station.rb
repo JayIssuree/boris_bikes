@@ -1,4 +1,5 @@
 require_relative 'bike'
+require_relative 'van'
 
 class DockingStation
 
@@ -7,38 +8,36 @@ class DockingStation
 
     def initialize(capacity = DEFAULT_CAPACITY)
         @capacity = capacity
-        @bikes = []
+        @bikes = { working: [], broken: [] }
     end
 
     def release_bike
         fail "No working bikes available" unless available_bike?
-        bikes.delete(select_working_bike)
+        select_working_bikes.pop
     end
 
     def dock(bike)
         fail "Docking station at capacity" if full?
-        @bikes << bike
+        bike.working? == true ? bikes[:working] << bike : bikes[:broken] << bike
         bike
     end
 
     private
 
     def full?
-        @bikes.length >= capacity
+        bikes[:working].length + bikes[:broken].length >= capacity
     end
 
     def available_bike?
-        number_of_available_bikes = 0
-        bikes.each { |bike|
-            number_of_available_bikes += 1 if bike.working?
-        }
-        number_of_available_bikes > 0
+        !bikes[:working].empty?
     end
 
-    def select_working_bike
-        bikes.select {|bike|
-            bike.working?
-        }.pop
+    def select_working_bikes
+        bikes[:working]
+    end
+
+    def select_broken_bikes
+        bikes[:broken]
     end
 
 end
