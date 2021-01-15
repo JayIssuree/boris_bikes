@@ -22,6 +22,14 @@ class DockingStation
         bike
     end
 
+    def select_working_bikes
+        bikes[:working]
+    end
+
+    def select_broken_bikes
+        bikes[:broken]
+    end
+
     private
 
     def full?
@@ -30,14 +38,6 @@ class DockingStation
 
     def available_bike?
         !bikes[:working].empty?
-    end
-
-    def select_working_bikes
-        bikes[:working]
-    end
-
-    def select_broken_bikes
-        bikes[:broken]
     end
 
 end
