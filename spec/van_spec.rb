@@ -8,6 +8,9 @@ describe Van do
         :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] },
         :select_broken_bikes => [broken_bike, broken_bike] 
     }
+    let(:garage) { double :garage,
+        :bikes => { working: [], broken:[] }
+    }
     
     describe '#pick_up_broken_bikes(station)' do
         
@@ -32,6 +35,18 @@ describe Van do
             new_capacity.times { station.select_broken_bikes << broken_bike }
             expect{ subject.pick_up_broken_bikes(station) }.to raise_error("Van at capacity")
             expect(subject.bikes[:broken].length).to eq(new_capacity)
+        end
+
+    end
+
+    describe '#drop_off_broken_bikes(garage)' do
+        
+        it 'should drop off broken bikes to a garage' do
+            subject.pick_up_broken_bikes(station)
+            expect(subject.bikes[:broken].length).to eq(2)
+            subject.drop_off_broken_bikes(garage)
+            expect(subject.bikes[:broken]).to be_empty
+            expect(garage.bikes[:broken].length).to eq(2)
         end
 
     end

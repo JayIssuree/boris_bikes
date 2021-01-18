@@ -17,6 +17,15 @@ class Van
         }
     end
 
+    def drop_off_broken_bikes(location)
+        bikes[:broken].each { |bike| 
+            location.bikes[:broken] << bike
+        }
+        bikes[:broken].clear
+    end
+
+    private
+
     def full?
         bikes[:working].length + bikes[:broken].length >= capacity
     end
