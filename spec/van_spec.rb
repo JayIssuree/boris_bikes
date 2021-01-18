@@ -18,6 +18,22 @@ describe Van do
             expect(subject.bikes[:working]).to be_empty
         end
 
+        it 'should not pick up a broken bike when at defualt capacity' do
+            Van::DEFAULT_CAPACITY.times { station.bikes[:broken] << broken_bike }
+            Van::DEFAULT_CAPACITY.times { station.select_broken_bikes << broken_bike }
+            expect{ subject.pick_up_broken_bikes(station) }.to raise_error("Van at capacity")
+            expect(subject.bikes[:broken].length).to eq(Van::DEFAULT_CAPACITY)
+        end
+
+        it 'should initialize a van with a capacity of choice' do
+            new_capacity = 5
+            subject = Van.new(new_capacity)
+            new_capacity.times { station.bikes[:broken] << broken_bike }
+            new_capacity.times { station.select_broken_bikes << broken_bike }
+            expect{ subject.pick_up_broken_bikes(station) }.to raise_error("Van at capacity")
+            expect(subject.bikes[:broken].length).to eq(new_capacity)
+        end
+
     end
 
 end
