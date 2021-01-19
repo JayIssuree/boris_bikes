@@ -20,8 +20,7 @@ class Van
     def drop_off_broken_bikes(location)
         bikes[:broken].each { |bike| 
             location.bikes[:broken] << bike
-        }
-        bikes[:broken].clear
+        }.clear
     end
 
     private
