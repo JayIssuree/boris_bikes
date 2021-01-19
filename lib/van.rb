@@ -23,6 +23,20 @@ class Van
         }.clear
     end
 
+    def pick_up_working_bikes(location)
+        location.select_working_bikes.reverse_each{ |bike|
+            fail "Van at capacity" if full?
+            bikes[:working] << bike
+            location.bikes[:working].delete(bike)
+        }
+    end
+
+    def drop_off_working_bikes(location)
+        bikes[:working].each { |bike| 
+            location.bikes[:working] << bike
+        }.clear
+    end
+
     private
 
     def full?

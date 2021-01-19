@@ -9,7 +9,8 @@ describe Van do
         :select_broken_bikes => [broken_bike, broken_bike] 
     }
     let(:garage) { double :garage,
-        :bikes => { working: [], broken:[] }
+        :bikes => { working: [working_bike, working_bike], broken:[] },
+        :select_working_bikes => [working_bike, working_bike]
     }
     
     describe '#pick_up_broken_bikes(station)' do
@@ -47,6 +48,29 @@ describe Van do
             subject.drop_off_broken_bikes(garage)
             expect(subject.bikes[:broken]).to be_empty
             expect(garage.bikes[:broken].length).to eq(2)
+        end
+
+    end
+
+    describe '#pick_up_working_bikes(garage)' do
+        
+        it 'should pick up working bikes from a garage' do
+            subject.pick_up_working_bikes(garage)
+            expect(subject.bikes[:working]).to include(working_bike)
+            expect(subject.bikes[:working].length).to eq(2)
+            expect(subject.bikes[:broken]).to be_empty
+        end
+
+    end
+
+    describe 'drop_off_working_bikes(station)' do
+        
+        it 'should drop off working bikes to a station' do
+            subject.pick_up_working_bikes(garage)
+            expect(subject.bikes[:working].length).to eq(2)
+            subject.drop_off_working_bikes(station)
+            expect(subject.bikes[:working]).to be_empty
+            expect(station.bikes[:working].length).to eq(4)
         end
 
     end
