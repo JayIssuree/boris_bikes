@@ -1,9 +1,12 @@
 class Garage
 
-    attr_reader :bikes
+    DEFAULT_CAPACITY = 20
 
-    def initialize
+    attr_reader :bikes, :capacity
+
+    def initialize(capacity = DEFAULT_CAPACITY)
         @bikes = { working: [], broken: [] }
+        @capacity = capacity
     end
 
     def select_working_bikes
