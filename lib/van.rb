@@ -10,31 +10,31 @@ class Van
     end
 
     def pick_up_broken_bikes(location)
-        location.select_broken_bikes.reverse_each{ |bike|
+        location.select_broken_bikes.reverse.each{ |bike|
             fail "Van at capacity" if full?
-            bikes[:broken] << bike
-            location.bikes[:broken].delete(bike)
+            bikes[:broken] << location.bikes[:broken].delete(bike)
         }
     end
 
     def drop_off_broken_bikes(location)
-        bikes[:broken].each { |bike| 
-            location.bikes[:broken] << bike
-        }.clear
+        bikes[:broken].reverse.each { |bike|
+            # fail if location.is_full?
+            location.bikes[:broken] << bikes[:broken].delete(bike)
+        }
     end
 
     def pick_up_working_bikes(location)
-        location.select_working_bikes.reverse_each{ |bike|
+        location.select_working_bikes.reverse.each{ |bike|
             fail "Van at capacity" if full?
-            bikes[:working] << bike
-            location.bikes[:working].delete(bike)
+            bikes[:working] << location.bikes[:working].delete(bike)
         }
     end
 
     def drop_off_working_bikes(location)
-        bikes[:working].each { |bike| 
-            location.bikes[:working] << bike
-        }.clear
+        bikes[:working].reverse.each { |bike|
+            # fail if location.is_full?
+            location.bikes[:working] << bikes[:working].delete(bike)
+        }
     end
 
     private
