@@ -8,5 +8,15 @@ class Garage
         @bikes = { working: [], broken: [] }
         @capacity = capacity
     end
+    
+    def is_full?
+        full?
+    end
+
+    private
+
+    def full?
+        bikes[:working].length + bikes[:broken].length >= capacity
+    end
 
 end

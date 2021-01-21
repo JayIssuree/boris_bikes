@@ -23,6 +23,10 @@ class DockingStation
         bike
     end
 
+    def is_full?
+        full?
+    end
+
     private
 
     def full?

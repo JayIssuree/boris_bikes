@@ -5,10 +5,12 @@ describe Van do
     let(:working_bike) { double :bike, :working? => true }
     let(:broken_bike) { double :bike, :working? => false }
     let(:station) { double :station, 
-        :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] }
+        :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] },
+        :is_full? => false
     }
     let(:garage) { double :garage,
-        :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] }
+        :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] },
+        :is_full? => false
     }
 
     describe '#initialize' do
@@ -52,7 +54,13 @@ describe Van do
         end
 
         it 'should not drop off broken bikes when the garage is at capacity' do
-            
+            16.times { garage.bikes[:broken] << broken_bike }
+            subject.pick_up_broken_bikes(station)
+            allow(garage).to receive(:class).and_return("Garage")
+            allow(garage).to receive(:is_full?).and_return(true)
+            expect{ subject.drop_off_broken_bikes(garage) }
+                .to raise_error("Garage is at capacity")
+                .and change{ subject.bikes[:broken].length }.by(0)
         end
 
     end
@@ -83,6 +91,16 @@ describe Van do
                 .to change { subject.bikes[:working].length }.by(-2)
                 .and change { station.bikes[:working].length}.by(2)
             expect(subject.bikes[:working]).to be_empty
+        end
+
+        it 'should not drop off working bikes when the station is at capacity' do
+            16.times { station.bikes[:working] << working_bike }
+            subject.pick_up_working_bikes(garage)
+            allow(station).to receive(:class).and_return("Station")
+            allow(station).to receive(:is_full?).and_return(true)
+            expect{ subject.drop_off_working_bikes(station) }
+                .to raise_error("Station is at capacity")
+                .and change{ subject.bikes[:working].length }.by(0)
         end
 
     end
