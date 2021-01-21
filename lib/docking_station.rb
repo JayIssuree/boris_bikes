@@ -14,21 +14,13 @@ class DockingStation
 
     def release_bike
         fail "No working bikes available" unless available_bike?
-        select_working_bikes.pop
+        bikes[:working].pop
     end
 
     def dock(bike)
         fail "Docking station at capacity" if full?
         bike.working? == true ? bikes[:working] << bike : bikes[:broken] << bike
         bike
-    end
-
-    def select_working_bikes
-        bikes[:working]
-    end
-
-    def select_broken_bikes
-        bikes[:broken]
     end
 
     private

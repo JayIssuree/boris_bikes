@@ -73,26 +73,5 @@ describe DockingStation do
         end
 
     end
-
-    describe '#select_broken/working_bikes' do
-        
-        before(:each) do
-            5.times { subject.dock(working_bike) }
-            5.times { subject.dock(broken_bike) }
-        end
-        
-        it 'should return the working bikes' do
-            expect(subject.select_working_bikes).to include(working_bike)
-            expect(subject.select_working_bikes).not_to include(broken_bike)
-            expect(subject.select_working_bikes.length).to eq(5)
-        end
-
-        it 'should return the broken bikes' do
-            expect(subject.select_broken_bikes).to include(broken_bike)
-            expect(subject.select_broken_bikes).not_to include(working_bike)
-            expect(subject.select_broken_bikes.length).to eq(5)
-        end
-
-    end
     
 end

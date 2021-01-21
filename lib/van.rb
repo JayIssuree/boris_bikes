@@ -10,7 +10,7 @@ class Van
     end
 
     def pick_up_broken_bikes(location)
-        location.select_broken_bikes.reverse.each{ |bike|
+        location.bikes[:broken].reverse.each{ |bike|
             fail "Van at capacity" if full?
             bikes[:broken] << location.bikes[:broken].delete(bike)
         }
@@ -24,7 +24,7 @@ class Van
     end
 
     def pick_up_working_bikes(location)
-        location.select_working_bikes.reverse.each{ |bike|
+        location.bikes[:working].reverse.each{ |bike|
             fail "Van at capacity" if full?
             bikes[:working] << location.bikes[:working].delete(bike)
         }

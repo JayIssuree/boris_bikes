@@ -5,12 +5,10 @@ describe Van do
     let(:working_bike) { double :bike, :working? => true }
     let(:broken_bike) { double :bike, :working? => false }
     let(:station) { double :station, 
-        :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] },
-        :select_broken_bikes => [broken_bike, broken_bike] 
+        :bikes => { working: [working_bike, working_bike], broken:[broken_bike, broken_bike] }
     }
     let(:garage) { double :garage,
-        :bikes => { working: [working_bike, working_bike], broken:[] },
-        :select_working_bikes => [working_bike, working_bike]
+        :bikes => { working: [working_bike, working_bike], broken:[] }
     }
     
     describe '#pick_up_broken_bikes(station)' do
@@ -24,7 +22,6 @@ describe Van do
 
         it 'should not pick up a broken bike when at defualt capacity' do
             Van::DEFAULT_CAPACITY.times { station.bikes[:broken] << broken_bike }
-            Van::DEFAULT_CAPACITY.times { station.select_broken_bikes << broken_bike }
             expect{ subject.pick_up_broken_bikes(station) }.to raise_error("Van at capacity")
             expect(subject.bikes[:broken].length).to eq(Van::DEFAULT_CAPACITY)
         end
@@ -33,7 +30,6 @@ describe Van do
             new_capacity = 5
             subject = Van.new(new_capacity)
             new_capacity.times { station.bikes[:broken] << broken_bike }
-            new_capacity.times { station.select_broken_bikes << broken_bike }
             expect{ subject.pick_up_broken_bikes(station) }.to raise_error("Van at capacity")
             expect(subject.bikes[:broken].length).to eq(new_capacity)
         end
