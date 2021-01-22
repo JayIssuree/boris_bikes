@@ -14,4 +14,8 @@ class Bike
         @working = false
     end
 
+    def fix
+        @working = true
+    end
+
 end
