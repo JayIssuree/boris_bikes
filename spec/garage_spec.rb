@@ -1,6 +1,9 @@
 require 'garage'
+require 'support/shared_examples_for_bike_container'
 
 describe Garage do
+
+    it_behaves_like BikeContainer
     
     describe 'state' do
 

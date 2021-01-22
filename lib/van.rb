@@ -1,13 +1,8 @@
+require_relative 'bike_container'
+
 class Van
 
-    DEFAULT_CAPACITY = 20
-
-    attr_reader :bikes, :capacity
-
-    def initialize(capacity = DEFAULT_CAPACITY)
-        @capacity = capacity
-        @bikes = { broken: [], working: [] }
-    end
+    include BikeContainer
 
     def pick_up_broken_bikes(location)
         location.bikes[:broken].reverse.each{ |bike|
@@ -35,12 +30,6 @@ class Van
             fail "#{location.class} is at capacity" if location.is_full?
             location.bikes[:working] << bikes[:working].delete(bike)
         }
-    end
-
-    private
-
-    def full?
-        bikes[:working].length + bikes[:broken].length >= capacity
     end
 
 end

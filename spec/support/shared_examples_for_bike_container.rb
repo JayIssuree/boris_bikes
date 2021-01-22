@@ -11,7 +11,7 @@ shared_examples_for BikeContainer do
     
         it 'can initialize with a capacity of choice' do
             random_capacity = Random.rand(100)
-            subject = BikeContainerTest.new(random_capacity)
+            subject = described_class.new(random_capacity)
             expect(subject.capacity).to eq(random_capacity)
         end
 
