@@ -7,6 +7,12 @@ describe DockingStation do
 
     let(:working_bike) { double :bike, :working? => true }
     let(:broken_bike) { double :bike, :working? => false }
+    let(:random_object) { double :random_object }
+    
+    before(:each) do        
+        allow(working_bike).to receive(:is_a?).with(Bike).and_return(true)
+        allow(broken_bike).to receive(:is_a?).with(Bike).and_return(true)
+    end
 
     describe '#release_bike' do
         
@@ -53,6 +59,10 @@ describe DockingStation do
         
         it 'should respond to dock method' do
             expect(subject).to respond_to(:dock).with(1).argument
+        end
+
+        it 'should raise an error when attempting to dock something other than a bike' do
+            expect{ subject.dock(random_object) }.to raise_error("Object is not a Bike")
         end
 
         it 'should return the docked working bike' do

@@ -13,6 +13,7 @@ class DockingStation
     end
 
     def dock(bike)
+        fail "Object is not a Bike" if not_a_bike(bike)
         fail "Docking station at capacity" if full?
         bike.working? == true ? bikes[:working] << bike : bikes[:broken] << bike
         bike
@@ -22,6 +23,10 @@ class DockingStation
 
     def available_bike?
         !bikes[:working].empty?
+    end
+
+    def not_a_bike(object)
+        !object.is_a?(Bike)
     end
 
 end
