@@ -12,6 +12,11 @@ class DockingStation
         bikes[:working].pop
     end
 
+    def release_chosen_bike(bike)
+        fail "This bike is not available" unless bike_available?(bike)
+        bikes[:working].delete(bike)
+    end
+
     def dock(bike)
         fail "Object is not a Bike" if not_a_bike(bike)
         fail "Docking station at capacity" if full?
@@ -27,6 +32,10 @@ class DockingStation
 
     def not_a_bike(object)
         !object.is_a?(Bike)
+    end
+
+    def bike_available?(bike)
+        bikes[:working].include?(bike)
     end
 
 end
